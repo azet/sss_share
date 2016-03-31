@@ -1,0 +1,3 @@
+[submodule "secretshare"]
+	path = secretshare
+	url = https://github.com/sellibitze/secretshare.git
