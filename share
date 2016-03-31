@@ -32,5 +32,4 @@ for secret in ${secrets}; do
   gpg -ear "${1}" <<<${msg} | mail -s "SSS secret part for ${1}" ${1}
   shift
 done
-unset msg
-
+unset stdin msg
