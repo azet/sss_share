@@ -22,13 +22,10 @@ readonly majority="$(( ${#} / 2 + 1))"
 }
 
 printf "%s recipients. majority reached at: %s.\n\n" ${#} ${majority}
-readonly symmetric_secret=$(gpg --passphrase "${tmp_pwd}" -ac 2>/dev/null <<<${stdin})
-
-rcpts=${#}
-secrets=$(${sss} -e${majority},${#} <<<$symmetric_secret)
+readonly ciphertext=$(gpg --passphrase "${tmp_pwd}" -ac 2>/dev/null <<<${stdin})
+secrets=$(${sss} -e${majority},${#} <<<${ciphertext})
 for secret in ${secrets}; do
-  printf "%s\n" ${1}
-  msg="${secret} .. ${symmetric_secret}"
+  msg="${secret} -> ${ciphertext}"
   gpg -ear "${1}" <<<${msg} | mail -s "SSS secret part for ${1}" ${1}
   shift
 done
